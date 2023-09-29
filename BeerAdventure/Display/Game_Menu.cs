@@ -1,11 +1,4 @@
-﻿using BeerAdventure.Levels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BeerAdventure.Display
+﻿namespace BeerAdventure.Display
 {
     public static class Game_Menu
     {
@@ -30,7 +23,7 @@ namespace BeerAdventure.Display
                 {
                     Console.Clear();
                     state = false;
-                    Intro.Game_Intro();
+                    // Intro.Game_Intro();
 
 
                 }
