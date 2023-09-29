@@ -9,8 +9,10 @@ namespace BeerAdventure
     {
         static void Main(string[] args)
         {
+            GameStateManager.Initialize();
+
             // Start game...
-            Section oldWomanShack = new Section()
+            Section oldWomanShack = new()
             {
                 Name = "Old womans shack.",
                 Description = "You are facing a old woman, she wants bread.",
@@ -21,13 +23,13 @@ namespace BeerAdventure
                         Description = "Deliver bread.",
                         Prerequisites = new()
                         {
-                            !GameStateManager.HasDeliveredBread
+                            (GameStateManager.State.HasDeliveredBread, false)
                         },
                         SuccesfulConsequnce = () =>
                         {
-                            GameStateManager.HasDeliveredBread = true;
+                            GameStateManager.SetState(GameStateManager.State.HasDeliveredBread, true);
                         },
-                        IsVisible = !GameStateManager.HasDeliveredBread // Only show if the player has bread in the Inventory.
+                        IsVisible = !GameStateManager.GetState(GameStateManager.State.HasDeliveredBread) // Only show if the player has bread in the Inventory.
                     }
                 },
                 Connections = new() { }
@@ -44,7 +46,7 @@ namespace BeerAdventure
                         Description = "Borrow money from old lanky-ass man!",
                         Prerequisites = new()
                         {
-                            GameStateManager.HasDeliveredBread
+                            (GameStateManager.State.HasDeliveredBread, true)
                         },
                         SuccesfulConsequnce = () =>
                         {
