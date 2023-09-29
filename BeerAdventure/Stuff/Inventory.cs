@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BeerAdventure.Character
+namespace BeerAdventure.Stuff
 {
     public static class Inventory
     {

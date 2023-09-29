@@ -12,10 +12,10 @@ namespace BeerAdventure.Stuff
         public string Name { get; set; }
 
         public string Description { get; set; }
+          
+        public Size Weight { get; set; }
 
-        public int Weight { get; set; }
-
-        public Item(string name, string description, int weight)
+        public Item(string name, string description, Size weight)
         {
             Name = name;
             Description = description;

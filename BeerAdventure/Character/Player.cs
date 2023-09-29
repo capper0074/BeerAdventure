@@ -36,7 +36,7 @@ namespace BeerAdventure.Character
             Console.WriteLine("Hi " + Player.Name + " Your current Stamina are: " + Player.Stamina + " And your health are: " + Player.Health);
         }
 
-        public static void Eat()
+        public static void Eat()½
 
 
 
