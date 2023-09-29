@@ -13,9 +13,5 @@ namespace BeerAdventure.Levels
         {
             Console.WriteLine("Test");
         }
-
-
-
-
     }
 }
