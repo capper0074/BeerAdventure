@@ -8,7 +8,9 @@
             DebugState2,
             DebugState3,
             HasDeliveredBread,
-            AnotherFalsePrerequisite
+            AnotherFalsePrerequisite,
+            HasNotSearchedHouse,
+            HasNotTalkedToWitch
         }
 
         public static Dictionary<State, bool> States = new();
@@ -19,7 +21,9 @@
         {
             if (IsInitialized)
                 return;
-
+            
+            States.Add(State.HasNotSearchedHouse, true);
+            States.Add(State.HasNotTalkedToWitch, true);
             States.Add(State.DebugState1, false);
             States.Add(State.DebugState2, false);
             States.Add(State.DebugState3, false);
