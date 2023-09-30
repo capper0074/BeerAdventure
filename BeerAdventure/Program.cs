@@ -1,4 +1,5 @@
-﻿using BeerAdventure.Managers;
+﻿using BeerAdventure.Display;
+using BeerAdventure.Managers;
 
 namespace BeerAdventure
 {
@@ -8,8 +9,12 @@ namespace BeerAdventure
         {
             GameStateManager.Initialize();
 
+            // Prepare the adventures section, choices and connections via this initialization.
             Adventure beerAdventure = new();
             beerAdventure.Initialize();
+
+            // Display the starting menu, and thereby, the game.
+            Beautifier.ShowStartMenu();
         }
     }
 }
