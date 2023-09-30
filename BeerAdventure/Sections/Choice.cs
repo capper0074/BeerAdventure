@@ -8,7 +8,7 @@ namespace BeerAdventure.Sections
         public List<Prerequisite> Prerequisites { get; set; } = new();
         public Action SuccesfulConsequnce { get; set; } = () => { throw new NotImplementedException(); };
         public Action FailedConsequnce { get; set; } = () => { throw new NotImplementedException(); };
-        public bool IsVisible { get; set; }
+        public Func<bool> IsVisible { get; set; } = () => true;
 
         public void Choose()
         {

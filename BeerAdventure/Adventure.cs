@@ -34,15 +34,25 @@ namespace BeerAdventure
             Choice debugSectionChoice1 = new()
             {
                 Description = "Debug choice 1",
-                SuccesfulConsequnce = () => GameStateManager.SetState(State.DebugState1, true),
-                FailedConsequnce = () => { } // No failed consequence.
+                SuccesfulConsequnce = () =>
+                {
+                    GameStateManager.SetState(State.DebugState1, true);
+                    Console.WriteLine("Something seems to shift as a choose this option!");
+                },
+                FailedConsequnce = () => { }, // No failed consequence.
+                IsVisible = () => !GameStateManager.GetState(State.DebugState1)
             };
 
             Choice debugSectionChoice2 = new()
             {
                 Description = "Debug choice 2",
-                SuccesfulConsequnce = () => GameStateManager.SetState(State.DebugState2, true),
-                FailedConsequnce = () => Console.WriteLine("Nothing happens as I choose this option...")
+                SuccesfulConsequnce = () =>
+                {
+                    GameStateManager.SetState(State.DebugState2, true);
+                    Console.WriteLine("Something seems to shift as a choose this option!");
+                },
+                FailedConsequnce = () => Console.WriteLine("Nothing happens as I choose this option..."),
+                IsVisible = () => GameStateManager.GetState(State.DebugState1) && !GameStateManager.GetState(State.DebugState2)
             };
 
             Prerequisite debugSectionChoice2Prerequisite1 = new()
@@ -56,8 +66,13 @@ namespace BeerAdventure
             Choice debugSectionChoice3 = new()
             {
                 Description = "Debug choice 3",
-                SuccesfulConsequnce = () => GameStateManager.SetState(State.DebugState3, true),
-                FailedConsequnce = () => Console.WriteLine("Nothing happens as I choose this option...")
+                SuccesfulConsequnce = () =>
+                {
+                    GameStateManager.SetState(State.DebugState3, true);
+                    Console.WriteLine("Something seems to shift as a choose this option!");
+                },
+                FailedConsequnce = () => Console.WriteLine("Nothing happens as I choose this option..."),
+                IsVisible = () => GameStateManager.GetState(State.DebugState2) && !GameStateManager.GetState(State.DebugState3)
             };
 
             Prerequisite debugSectionChoice3Prerequisite1 = new()

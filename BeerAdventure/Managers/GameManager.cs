@@ -25,7 +25,10 @@ namespace BeerAdventure.Managers
             }));
             StartMenu.MenuItems.Add(new("Give up in advance...", () =>
             {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("I wasn't up for the task");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.ReadLine();
             }));
 
             _isInitialized = true;

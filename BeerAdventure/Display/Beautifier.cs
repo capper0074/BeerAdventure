@@ -49,14 +49,21 @@ namespace BeerAdventure.Display
 
         private static void DisplaySection(Section section)
         {
+            Console.ForegroundColor = _defaultInputColor;
+            Console.WriteLine("[Continue]");
+            Console.ForegroundColor = _defaultForegroundColor;
+            Console.ReadLine();
+
+            Console.Clear();
+
             Console.WriteLine(section.Name);
             Console.WriteLine(section.Description);
             Console.WriteLine();
 
             BulletMenu sectionMenu = new();
             foreach (Choice choice in section.Choices)
-                sectionMenu.MenuItems.Add(new(choice.Description, () => choice.Choose()));
-                // DisplayChoice(choice);
+                if (choice.IsVisible())
+                    sectionMenu.MenuItems.Add(new(choice.Description, () => choice.Choose()));
 
             foreach (Connection connection in section.Connections)
                 if (connection.IsVisible())
@@ -64,7 +71,7 @@ namespace BeerAdventure.Display
 
             Display(sectionMenu);
 
-            // TODO: Place this somewhere else!
+            // TODO: This should probably be placed somewhere else...
             Display(Player.CurrentSection);
         }
 
@@ -82,21 +89,25 @@ namespace BeerAdventure.Display
         {
             public static void DisplayTitle()
             {
-                string title =
-                    " ▄▄▄▄   ▓█████ ▓█████  ██▀███      ▄▄▄      ▓█████▄  ██▒   █▓▓█████  ███▄    █ ▄▄▄█████▓ █    ██  ██▀███  ▓█████ " +
-                    "▓█████▄ ▓█   ▀ ▓█   ▀ ▓██ ▒ ██▒   ▒████▄    ▒██▀ ██▌▓██░   █▒▓█   ▀  ██ ▀█   █ ▓  ██▒ ▓▒ ██  ▓██▒▓██ ▒ ██▒▓█   ▀ " +
-                    "▒██▒ ▄██▒███   ▒███   ▓██ ░▄█ ▒   ▒██  ▀█▄  ░██   █▌ ▓██  █▒░▒███   ▓██  ▀█ ██▒▒ ▓██░ ▒░▓██  ▒██░▓██ ░▄█ ▒▒███   " +
-                    "▒██░█▀  ▒▓█  ▄ ▒▓█  ▄ ▒██▀▀█▄     ░██▄▄▄▄██ ░▓█▄   ▌  ▒██ █░░▒▓█  ▄ ▓██▒  ▐▌██▒░ ▓██▓ ░ ▓▓█  ░██░▒██▀▀█▄  ▒▓█  ▄ " +
-                    "░▓█  ▀█▓░▒████▒░▒████▒░██▓ ▒██▒    ▓█   ▓██▒░▒████▓    ▒▀█░  ░▒████▒▒██░   ▓██░  ▒██▒ ░ ▒▒█████▓ ░██▓ ▒██▒░▒████▒" +
-                    "░▒▓███▀▒░░ ▒░ ░░░ ▒░ ░░ ▒▓ ░▒▓░    ▒▒   ▓▒█░ ▒▒▓  ▒    ░ ▐░  ░░ ▒░ ░░ ▒░   ▒ ▒   ▒ ░░   ░▒▓▒ ▒ ▒ ░ ▒▓ ░▒▓░░░ ▒░ ░" +
-                    "▒░▒   ░  ░ ░  ░ ░ ░  ░  ░▒ ░ ▒░     ▒   ▒▒ ░ ░ ▒  ▒    ░ ░░   ░ ░  ░░ ░░   ░ ▒░    ░    ░░▒░ ░ ░   ░▒ ░ ▒░ ░ ░  ░" +
-                    " ░    ░    ░      ░     ░░   ░      ░   ▒    ░ ░  ░      ░░     ░      ░   ░ ░   ░       ░░░ ░ ░   ░░   ░    ░   " +
-                    " ░         ░  ░   ░  ░   ░              ░  ░   ░          ░     ░  ░         ░             ░        ░        ░  ░" +
-                    "     ░                                      ░           ░                                                        ";
+                #region DON'T TOUCH THIS PLEASE
+                int preferredWidth = Console.WindowWidth / 2 - (73 / 2);
+                string padding = string.Empty;
+
+                for (int i = 0; i < preferredWidth; i++)
+                    padding += " ";
+
+                string title = 
+                    padding + @" ____                               _                 _                  " + "\n" +
+                    padding + @"|  _ \                     /\      | |               | |                 " + "\n" +
+                    padding + @"| |_) | ___  ___ _ __     /  \   __| |_   _____ _ __ | |_ _   _ _ __ ___ " + "\n" +
+                    padding + @"|  _ < / _ \/ _ \ '__|   / /\ \ / _` \ \ / / _ \ '_ \| __| | | | '__/ _ \" + "\n" +
+                    padding + @"| |_) |  __/  __/ |     / ____ \ (_| |\ V /  __/ | | | |_| |_| | | |  __/" + "\n" +
+                    padding + @"|____/ \___|\___|_|    /_/    \_\__,_| \_/ \___|_| |_|\__|\__,_|_|  \___|" + "\n";
 
                 Console.ForegroundColor = _defaultTitleColor;
                 Console.WriteLine(title);
                 Console.ForegroundColor = _defaultForegroundColor;
+                #endregion
             }
 
             /// <summary>
@@ -126,13 +137,21 @@ namespace BeerAdventure.Display
             /// <returns>The response in the form of an <see cref="int"/>.</returns>
             public static int PromptUser(string prompt, int minValue, int maxValue)
             {
-                string input = PromptUser(prompt);
+                do
+                {
+                    string input = PromptUser(prompt);
 
-                if (int.TryParse(input, out int inputNumber))
-                    if (inputNumber >= minValue && inputNumber <= maxValue)
-                        return inputNumber;
-                
-                throw new ArgumentException("That number is not within the permitted range of " + minValue + " - " + maxValue);
+                    if (int.TryParse(input, out int inputNumber))
+                        if (inputNumber >= minValue && inputNumber <= maxValue)
+                            return inputNumber;
+
+                    Console.ForegroundColor = _defaultFailureColor;
+                    Console.WriteLine("Hmm, that doesn't appear to be a valid choice right now...");
+                    Console.ForegroundColor = _defaultForegroundColor;
+                } 
+                while (true);
+
+                // throw new ArgumentException("That number is not within the permitted range of " + minValue + " - " + maxValue);
             }
         }
     }
