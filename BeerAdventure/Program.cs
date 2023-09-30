@@ -10,20 +10,7 @@ namespace BeerAdventure
         static void Main(string[] args)
         {
             // Start game...
-            
-
-
-
-            oldWomanShack.Connections.Add(oldMan);
-            oldMan.Connections.Add(oldWomanShack);
-
-            oldMan.Choices[0].Choose();
-            DisplaySection(oldWomanShack);
-
-            oldWomanShack.Choices[0].Choose();
-            DisplaySection(oldMan);
-
-            oldMan.Choices[0].Choose();
+           
         }
 
         public static void DisplaySection(Section section)
