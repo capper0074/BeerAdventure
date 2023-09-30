@@ -9,6 +9,5 @@ namespace BeerAdventure.Sections
 
         public bool IsConnectionPrerequisite;
         public string? FailMessage;
-        public string? SuccessMessage;
     }
 }

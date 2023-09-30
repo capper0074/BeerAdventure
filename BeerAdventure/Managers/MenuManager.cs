@@ -10,6 +10,10 @@ namespace BeerAdventure.Managers;
 
 public static class MenuManager
 {
+    public static void DisplayConnectionMessage(List<Prerequisite> prerequisites)
+    {
+        //DisplaySectionBeautifier(prerequisites);
+    }
     public static void DisplaySection(Player player)
     {
         if (player != null)

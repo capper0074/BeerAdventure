@@ -1,6 +1,5 @@
 ﻿using BeerAdventure.Character;
 using BeerAdventure.Sections;
-using BeerAdventure.Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +14,20 @@ namespace BeerAdventure.Managers
         //      If the move is okay, then update the players current section and display the new sections menu via the menumanager
         //      If the move is not okay, display some sort of error message (Kasper arbejder på noget lækkert her)
 
-        public static void MovePlayer(Player player, Section section)
+        public static void MovePlayer(Player player, Connection connection)
         {
-            if (player != null && section != null)
+            if (player != null && connection != null)
             {
-                player.CurrentSection = section;
-                MenuManager.DisplaySection(player);
+                if (connection.CheckConnection().Count == 0)
+                {
+                    player.CurrentSection = connection.Target;
+
+                    MenuManager.DisplaySection(player);
+                }
+                else if (connection.CheckConnection().Count > 0)
+                {
+                    MenuManager.DisplayConnectionMessage(connection.CheckConnection());
+                }
             }
         }
     }
