@@ -1,14 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BeerAdventure.Managers
+﻿namespace BeerAdventure.Managers
 {
     public static class GameStateManager
     {
-        public static bool HasDeliveredBread = false;
-        public static bool LastPrerequisite = true;
+        public enum State
+        {
+            HasDeliveredBread,
+            AnotherFalsePrerequisite
+        }
+
+        public static Dictionary<State, bool> States = new();
+
+        public static bool IsInitialized = false;
+
+        public static void Initialize()
+        {
+            if (IsInitialized)
+                return;
+
+            States.Add(State.HasDeliveredBread, false);
+            States.Add(State.AnotherFalsePrerequisite, false);
+
+            IsInitialized = true;
+        }
+
+        public static bool GetState(State state)
+        {
+            if (!States.ContainsKey(state))
+                throw new ArgumentException("No matching key found in dictionary. Key: " + state.ToString());
+
+            return States[state];
+        }
+
+        public static void SetState(State state, bool value)
+        {
+            if (!States.ContainsKey(state))
+                throw new ArgumentException("No matching key found in dictionary. Key: " + state.ToString());
+
+            States[state] = value;
+        }
     }
 }
