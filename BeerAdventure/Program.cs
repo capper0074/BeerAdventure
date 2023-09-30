@@ -1,7 +1,4 @@
-﻿using BeerAdventure.Sections;
-using BeerAdventure.Managers;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
+﻿using BeerAdventure.Managers;
 
 namespace BeerAdventure
 {
@@ -9,25 +6,10 @@ namespace BeerAdventure
     {
         static void Main(string[] args)
         {
-            // Start game...
-           
-        }
+            GameStateManager.Initialize();
 
-        public static void DisplaySection(Section section)
-        {
-
-
-            // Display section:
-            Console.WriteLine(section.Name);
-            Console.WriteLine(section.Description);
-
-            foreach (Choice choice in section.Choices)
-                Console.WriteLine(choice.Description);
-
-            foreach (Section connection in section.Connections)
-                Console.WriteLine(connection.Name);
-
-            Console.ReadLine();
+            Adventure beerAdventure = new();
+            beerAdventure.Initialize();
         }
     }
 }
