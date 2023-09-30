@@ -27,7 +27,7 @@ namespace BeerAdventure.Managers
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("I wasn't up for the task");
-                Console.ForegroundColor = ConsoleColor.Green;
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.ReadLine();
             }));
 
