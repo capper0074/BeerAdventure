@@ -2,15 +2,10 @@
 
 namespace BeerAdventure.Inventory
 {
-    public interface I_Inventory
+    public static class Inventory
     {
-        public static List<Item>
-        public static List<Item>
-        public static List<Item>
-
-        public void ShowInventory()
-        {
-
-        }
+        public static List<Item> SmallItems = new();
+        public static List<Item> MediumItems = new();
+        public static List<Item> LargeItems = new();
     }
 }

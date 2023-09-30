@@ -4,11 +4,8 @@
     {
         public enum State
         {
-            HasDeliveredBread,
-            AnotherFalsePrerequisite,
             HasNotSearchedHouse,
             HasNotTalkedToWitch
-
         }
 
         public static Dictionary<State, bool> States = new();
@@ -20,8 +17,6 @@
             if (IsInitialized)
                 return;
             
-            States.Add(State.HasDeliveredBread, false);
-            States.Add(State.AnotherFalsePrerequisite, false);
             States.Add(State.HasNotSearchedHouse, true);
             States.Add(State.HasNotTalkedToWitch, true);
 
