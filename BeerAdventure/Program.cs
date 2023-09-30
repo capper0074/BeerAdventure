@@ -7,6 +7,7 @@ namespace BeerAdventure
     {
         static void Main(string[] args)
         {
+            SectionManager.Initialize();
             GameManager.Initialize();
             GameStateManager.Initialize();
 

@@ -22,6 +22,9 @@ namespace BeerAdventure.Sections
         public Choice(string description, List<Prerequisite> prerequisites, Action succesfulConsequence, Action failedConsequence) 
             : this(description, prerequisites, succesfulConsequence, failedConsequence, () => true) { }
 
+        public Choice(string description, List<Prerequisite> prerequisites, Action succesfulConsequence, Func<bool> isVisible)
+            : this(description, prerequisites, succesfulConsequence, () => { }, isVisible) { }
+
         public Choice(string description, List<Prerequisite> prerequisites, Action succesfulConsequence)
             : this(description, prerequisites, succesfulConsequence, () => { }) { }
 

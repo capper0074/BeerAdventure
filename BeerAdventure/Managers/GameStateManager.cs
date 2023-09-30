@@ -7,9 +7,7 @@
             DebugState1,
             DebugState2,
             DebugState3,
-            HasDeliveredBread,
-            AnotherFalsePrerequisite,
-            HasNotSearchedHouse,
+            HasSearchedHome,
             HasNotTalkedToWitch
         }
 
@@ -22,13 +20,11 @@
             if (IsInitialized)
                 return;
             
-            States.Add(State.HasNotSearchedHouse, true);
-            States.Add(State.HasNotTalkedToWitch, true);
             States.Add(State.DebugState1, false);
             States.Add(State.DebugState2, false);
             States.Add(State.DebugState3, false);
-            States.Add(State.HasDeliveredBread, false);
-            States.Add(State.AnotherFalsePrerequisite, false);
+            States.Add(State.HasSearchedHome, false);
+            States.Add(State.HasNotTalkedToWitch, true);
 
             IsInitialized = true;
         }

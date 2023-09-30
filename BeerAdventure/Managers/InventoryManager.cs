@@ -1,8 +1,8 @@
-﻿using BeerAdventure.Stuff;
+﻿using BeerAdventure.Inventory;
 
-namespace BeerAdventure.Inventory
+namespace BeerAdventure.Managers
 {
-    public static class Inventory
+    public static class InventoryManager
     {
         public static List<Item> SmallItems = new();
         public static List<Item> MediumItems = new();

@@ -14,15 +14,19 @@ namespace BeerAdventure.Display
 
         private const string _defaultBulletMenuPrompt = "What would you like to choose?: ";
 
-        /// <summary>
-        /// Displays the starting menu of the Beer Adventure game!
-        /// </summary>
-        /// <exception cref="NotImplementedException"></exception>
         public static void DisplayTitle()
             => BeautifierUtility.DisplayTitle();
 
         public static void Display<T>(T displayable)
         {
+            if (displayable is string displayableString)
+            {
+                ConsoleColor consoleColor = Console.ForegroundColor;
+                Console.ForegroundColor = _defaultForegroundColor;
+                Console.WriteLine(displayableString);
+                Console.ForegroundColor = consoleColor;
+            }
+
             if (displayable is BulletMenu menu)
                 DisplayBulletMenu(menu);
 
@@ -38,41 +42,98 @@ namespace BeerAdventure.Display
 
         private static void DisplayBulletMenu(BulletMenu menu)
         {
+            Console.CursorVisible = false;
+
+            int targetedMenuItem = 0;
+            (int startLeft, int startTop) = Console.GetCursorPosition();
+
             for (int i = 0; i < menu.MenuItems.Count; i++)
-                Console.WriteLine(i + 1 + ": " + menu.MenuItems[i].Description);
+            {
+                if (i == targetedMenuItem)
+                {
+                    Console.ForegroundColor = _defaultSuccessColor;
+                    Console.WriteLine("   " + menu.MenuItems[i].Description + "   ");
+                    Console.ForegroundColor = _defaultForegroundColor;
+                }
+                else
+                    Console.WriteLine("   " + menu.MenuItems[i].Description + "   ");
+            }
 
-            Console.WriteLine();
-            int menuChoice = BeautifierUtility.PromptUser(_defaultBulletMenuPrompt, 1, menu.MenuItems.Count) - 1;
+            (int endLeft, int endTop) = Console.GetCursorPosition();
 
-            menu.MenuItems[menuChoice].Consequence.Invoke();
+            ConsoleKey pressedKey;
+
+            do
+            {
+                Console.ForegroundColor = _defaultInputColor;
+                Console.SetCursorPosition(startLeft + 1, startTop + targetedMenuItem);
+                Console.Write('[');
+                Console.SetCursorPosition(startLeft + 4 + menu.MenuItems[targetedMenuItem].Description.Length, startTop + targetedMenuItem);
+                Console.Write(']');
+                Console.ForegroundColor = _defaultForegroundColor;
+
+                pressedKey = Console.ReadKey(true).Key;
+
+                if (pressedKey == ConsoleKey.DownArrow)
+                    targetedMenuItem++;
+
+                if (pressedKey == ConsoleKey.UpArrow)
+                    targetedMenuItem--;
+
+                if (targetedMenuItem < 0)
+                    targetedMenuItem = menu.MenuItems.Count - 1;
+
+                if (targetedMenuItem > menu.MenuItems.Count - 1)
+                    targetedMenuItem = 0;
+
+                Console.SetCursorPosition(startLeft, startTop);
+
+                for (int i = 0; i < menu.MenuItems.Count; i++)
+                {
+                    if (i == targetedMenuItem)
+                    {
+                        Console.ForegroundColor = _defaultSuccessColor;
+                        Console.WriteLine("   " + menu.MenuItems[i].Description + "   ");
+                        Console.ForegroundColor = _defaultForegroundColor;
+                    }
+                    else
+                        Console.WriteLine("   " + menu.MenuItems[i].Description + "   ");
+                }
+            }
+            while (!(pressedKey == ConsoleKey.Enter || pressedKey == ConsoleKey.Spacebar));
+
+            // int menuChoice = BeautifierUtility.PromptUser(_defaultBulletMenuPrompt, 1, menu.MenuItems.Count) - 1;
+
+            Console.SetCursorPosition(endLeft, endTop);
+
+            Console.WriteLine(); // For spacing.
+
+            menu.MenuItems[targetedMenuItem].Consequence();
         }
 
         private static void DisplaySection(Section section)
         {
-            Console.ForegroundColor = _defaultInputColor;
-            Console.WriteLine("[Continue]");
-            Console.ForegroundColor = _defaultForegroundColor;
-            Console.ReadLine();
-
             Console.Clear();
 
+            Console.ForegroundColor = _defaultTitleColor;
             Console.WriteLine(section.Name);
+            Console.ForegroundColor = _defaultForegroundColor;
+
             Console.WriteLine(section.Description);
             Console.WriteLine();
 
             BulletMenu sectionMenu = new();
             foreach (Choice choice in section.Choices)
-                if (choice.IsVisible())
+                if (choice.IsVisibleWhen())
                     sectionMenu.MenuItems.Add(new(choice.Description, () => choice.Choose()));
 
             foreach (Connection connection in section.Connections)
                 if (connection.IsVisible())
-                    sectionMenu.MenuItems.Add(new(connection.Target.Name, () => connection.Choose()));
+                    sectionMenu.MenuItems.Add(new(connection.Description, () => connection.Choose()));
 
             Display(sectionMenu);
 
-            // TODO: This should probably be placed somewhere else...
-            Display(Player.CurrentSection);
+            BeautifierUtility.PromptContinue();
         }
 
         private static void DisplayConnection(Connection connection)
@@ -152,6 +213,21 @@ namespace BeerAdventure.Display
                 while (true);
 
                 // throw new ArgumentException("That number is not within the permitted range of " + minValue + " - " + maxValue);
+            }
+
+            public static void PromptContinue()
+            {
+                Console.ForegroundColor = _defaultInputColor;
+                Console.Write("[Continue...]");
+                Console.ForegroundColor = _defaultForegroundColor;
+
+                ConsoleKeyInfo keyPressed;
+
+                do
+                {
+                    keyPressed = Console.ReadKey(true);
+                } 
+                while (!(keyPressed.Key == ConsoleKey.Enter || keyPressed.Key == ConsoleKey.Spacebar));
             }
         }
     }

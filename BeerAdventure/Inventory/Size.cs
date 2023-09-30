@@ -1,4 +1,4 @@
-﻿namespace BeerAdventure.Stuff
+﻿namespace BeerAdventure.Inventory
 {
     public enum Size //Dette er kun noget vejledende.
     {
