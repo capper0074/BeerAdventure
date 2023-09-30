@@ -2,11 +2,13 @@
 {
     public class MenuItem
     {
-        public string Description { get; set; } = string.Empty;
+        public string Description { get; set; }
+        public Action Consequence { get; set; }
 
-        public MenuItem(string description)
+        public MenuItem(string description, Action consequence)
         {
             Description = description;
+            Consequence = consequence;
         }
     }
 }

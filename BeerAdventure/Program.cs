@@ -3,18 +3,16 @@ using BeerAdventure.Managers;
 
 namespace BeerAdventure
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {
+            GameManager.Initialize();
             GameStateManager.Initialize();
 
-            // Prepare the adventures section, choices and connections via this initialization.
-            Adventure beerAdventure = new();
-            beerAdventure.Initialize();
-
-            // Display the starting menu, and thereby, the game.
-            Beautifier.ShowStartMenu();
+            // Display the title and the starting menu, and thereby, the game.
+            Beautifier.DisplayTitle();
+            Beautifier.Display(GameManager.StartMenu);
         }
     }
 }

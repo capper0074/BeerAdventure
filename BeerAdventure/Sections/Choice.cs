@@ -21,7 +21,6 @@ namespace BeerAdventure.Sections
                 SuccesfulConsequnce.Invoke();
             else 
                 FailedConsequnce.Invoke();
-
         }
     }
 }

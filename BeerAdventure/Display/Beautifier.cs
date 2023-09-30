@@ -16,16 +16,8 @@ namespace BeerAdventure.Display
         /// Displays the starting menu of the Beer Adventure game!
         /// </summary>
         /// <exception cref="NotImplementedException"></exception>
-        public static void ShowStartMenu()
-        {
-            BeautifierUtility.DisplayTitle();
-
-            BulletMenu startMenu = new();
-            startMenu.MenuItems.Add(new("Embark on an adventure!"));
-            startMenu.MenuItems.Add(new("Give up in advance..."));
-
-            Display(startMenu);
-        }
+        public static void DisplayTitle()
+            => BeautifierUtility.DisplayTitle();
 
         public static void Display<T>(T displayable)
         {
@@ -48,10 +40,9 @@ namespace BeerAdventure.Display
                 Console.WriteLine(i + 1 + ": " + menu.MenuItems[i].Description);
 
             Console.WriteLine();
-            int menuChoice = BeautifierUtility.PromptUser(_defaultBulletMenuPrompt, 1, menu.MenuItems.Count);
+            int menuChoice = BeautifierUtility.PromptUser(_defaultBulletMenuPrompt, 1, menu.MenuItems.Count) - 1;
 
-            // TODO: Remove this.
-            Console.WriteLine("And this is where I would do something with the input, if I knew what to doooo!");
+            menu.MenuItems[menuChoice].Consequence.Invoke();
         }
 
         private static void ShowSection(Section section)

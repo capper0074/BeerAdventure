@@ -14,14 +14,14 @@ public static class MenuManager
     {
         //DisplaySectionBeautifier(prerequisites);
     }
-    public static void DisplaySection(Player player)
-    {
-        if (player != null)
-        {
-            Section section = player.CurrentSection;
-        }
-        //DisplaySectionBeautifier(section);
-    }
+    //public static void DisplaySection(Player player)
+    //{
+    //    if (player != null)
+    //    {
+    //        Section section = player.CurrentSection;
+    //    }
+    //    //DisplaySectionBeautifier(section);
+    //}
 
     public static void DisplayChoices(Section section)
     {

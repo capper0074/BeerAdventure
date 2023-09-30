@@ -1,4 +1,5 @@
-﻿using BeerAdventure.Managers;
+﻿using BeerAdventure.Character;
+using BeerAdventure.Managers;
 using State = BeerAdventure.Managers.GameStateManager.State;
 
 namespace BeerAdventure.Sections
@@ -8,15 +9,15 @@ namespace BeerAdventure.Sections
         public Section Target { get; set; }
         public List<Prerequisite> Prerequisites { get; set; } = new();
 
-        public List<Prerequisite> CheckConnection()
+        public void Choose()
         {
-            List<Prerequisite> unfufilledPreriquisites  = new();
-
+            bool allPrerequisistesFulfilled = true;
             foreach (Prerequisite prerequisite in Prerequisites)
                 if (GameStateManager.GetState(prerequisite.State) != prerequisite.RequiredValue)
-                    unfufilledPreriquisites.Add(prerequisite);
+                    allPrerequisistesFulfilled = false;
 
-            return unfufilledPreriquisites;
+            if (allPrerequisistesFulfilled == true)
+                Player.CurrentSection = Target;
         }
     }
 }

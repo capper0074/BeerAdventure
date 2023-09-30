@@ -2,10 +2,9 @@
 
 namespace BeerAdventure.Character
 {
-    public class Player
+    public static class Player
     {
         public static string Name { get; set; } = string.Empty;
-        public Section CurrentSection { get; set; } = new();
-
+        public static Section CurrentSection { get; set; } = new();
     }
 }

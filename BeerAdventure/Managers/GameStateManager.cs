@@ -4,6 +4,9 @@
     {
         public enum State
         {
+            DebugState1,
+            DebugState2,
+            DebugState3,
             HasDeliveredBread,
             AnotherFalsePrerequisite
         }
@@ -17,6 +20,9 @@
             if (IsInitialized)
                 return;
 
+            States.Add(State.DebugState1, false);
+            States.Add(State.DebugState2, false);
+            States.Add(State.DebugState3, false);
             States.Add(State.HasDeliveredBread, false);
             States.Add(State.AnotherFalsePrerequisite, false);
 
