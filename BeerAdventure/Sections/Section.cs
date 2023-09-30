@@ -12,7 +12,5 @@ namespace BeerAdventure.Sections
         public string Description { get; set; } = string.Empty;
         public List<Choice> Choices { get; set; } = new();
         public List<Section> Connections { get; set; } = new();
-
-
     }
 }

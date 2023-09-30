@@ -12,10 +12,10 @@
         {
             bool allPrerequisistesFulfilled = true;
             foreach (bool prerequisites in Prerequisites)
-                if (!prerequisites)
+                if (prerequisites == false)
                     allPrerequisistesFulfilled = false;
             
-            if (allPrerequisistesFulfilled)
+            if (allPrerequisistesFulfilled == true)
                 SuccesfulConsequnce.Invoke();
             else 
                 FailedConsequnce.Invoke();
