@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using BeerAdventure.Character;
 using BeerAdventure.Sections;
 
-namespace BeerAdventure.Manager;
+namespace BeerAdventure.Managers;
 
 public static class MenuManager
 {
