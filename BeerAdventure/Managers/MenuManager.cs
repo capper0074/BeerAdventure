@@ -10,18 +10,16 @@ namespace BeerAdventure.Managers;
 
 public static class MenuManager
 {
-    static Section DisplaySection(Player player)
+    public static void DisplaySection(Player player)
     {
         if (player != null)
         {
             Section section = player.CurrentSection;
-
-            return section;
         }
-        return null;
+        //DisplaySectionBeautifier(section);
     }
 
-    static List<Choice> DisplayChoices(Section section)
+    public static void DisplayChoices(Section section)
     {
         List<Choice> choicesList = new List<Choice>();
         if (section != null)
@@ -38,7 +36,7 @@ public static class MenuManager
                 choicesList.Add(emptyChoice);
             }
         }
-        return choicesList;
+        //DisplaySectionBeautifier(section);
     }
 }
 
