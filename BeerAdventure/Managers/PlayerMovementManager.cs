@@ -18,7 +18,7 @@ namespace BeerAdventure.Managers
         {
             if (player != null && connection != null)
             {
-                if (connection.CheckConnection().Count == 0)
+                if (connection.CheckConnection().Count == 0) //If 0 failed prerequisites are returned
                 {
                     player.CurrentSection = connection.Target;
 

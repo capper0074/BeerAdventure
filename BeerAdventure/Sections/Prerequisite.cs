@@ -7,7 +7,6 @@ namespace BeerAdventure.Sections
         public State State { get; set; }
         public bool RequiredValue { get; set; }
 
-        public bool IsConnectionPrerequisite;
         public string? FailMessage;
     }
 }
