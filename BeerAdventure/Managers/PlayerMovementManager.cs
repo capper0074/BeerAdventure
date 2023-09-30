@@ -12,6 +12,7 @@ namespace BeerAdventure.Managers
     {
         public static void MovePlayer(Player player, Section section)
         {
+            if (player != null && )
             player.CurrentSection = section;
         }
     }
