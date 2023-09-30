@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace BeerAdventure.Display
 {
-    public class StatDisplayer
+    public class BulletMenu
     {
+        public List<MenuItem> MenuItems = new();
     }
 }
