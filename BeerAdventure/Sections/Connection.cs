@@ -6,13 +6,13 @@ namespace BeerAdventure.Sections
     public class Connection
     {
         public Section Target { get; set; }
-        public List<(State, bool)> Prerequisites { get; set; } = new();
+        public List<Prerequisite> Prerequisites { get; set; } = new();
 
         public void Choose()
         {
             bool allPrerequisistesFulfilled = true;
-            foreach ((State state, bool value) prerequisite in Prerequisites)
-                if (GameStateManager.GetState(prerequisite.state) != prerequisite.value)
+            foreach (Prerequisite prerequisite in Prerequisites)
+                if (GameStateManager.GetState(prerequisite.State) != prerequisite.RequiredValue)
                     allPrerequisistesFulfilled = false;
 
             if (allPrerequisistesFulfilled)
