@@ -42,7 +42,7 @@ namespace BeerAdventure
             {
                 Description = "Debug choice 2",
                 SuccesfulConsequnce = () => GameStateManager.SetState(State.DebugState2, true),
-                FailedConsequnce = () => { } // No failed consequence.
+                FailedConsequnce = () => Console.WriteLine("Nothing happens as I choose this option...")
             };
 
             Prerequisite debugSectionChoice2Prerequisite1 = new()
@@ -57,7 +57,7 @@ namespace BeerAdventure
             {
                 Description = "Debug choice 3",
                 SuccesfulConsequnce = () => GameStateManager.SetState(State.DebugState3, true),
-                FailedConsequnce = () => { } // No failed consequence.
+                FailedConsequnce = () => Console.WriteLine("Nothing happens as I choose this option...")
             };
 
             Prerequisite debugSectionChoice3Prerequisite1 = new()
@@ -89,19 +89,22 @@ namespace BeerAdventure
             #region Debug Connections
             Connection debugSection1Connection1 = new()
             {
-                Target = debugSection2
+                Target = debugSection2,
+                IsVisible = () => GameStateManager.GetState(State.DebugState3)
             };
 
             debugSection1.Connections.Add(debugSection1Connection1);
 
             Connection debugSection2Connection1 = new()
             {
-                Target = debugSection1
+                Target = debugSection1,
+                IsVisible = () => true
             };
 
             debugSection2.Connections.Add(debugSection2Connection1);
             #endregion
 
+            Player.CurrentSection = debugSection1;
             Beautifier.Display(debugSection1);
         }
     }

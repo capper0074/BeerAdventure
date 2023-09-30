@@ -1,4 +1,6 @@
-﻿using BeerAdventure.Sections;
+﻿using BeerAdventure.Character;
+using BeerAdventure.Managers;
+using BeerAdventure.Sections;
 
 namespace BeerAdventure.Display
 {
@@ -25,13 +27,13 @@ namespace BeerAdventure.Display
                 DisplayBulletMenu(menu);
 
             if (displayable is Section section)
-                ShowSection(section);
+                DisplaySection(section);
 
             if (displayable is Choice choice)
-                ShowChoice(choice);
+                DisplayChoice(choice);
 
             if (displayable is Connection connection)
-                ShowConnection(connection);
+                DisplayConnection(connection);
         }
 
         private static void DisplayBulletMenu(BulletMenu menu)
@@ -45,14 +47,36 @@ namespace BeerAdventure.Display
             menu.MenuItems[menuChoice].Consequence.Invoke();
         }
 
-        private static void ShowSection(Section section)
-            => throw new NotImplementedException();
+        private static void DisplaySection(Section section)
+        {
+            Console.WriteLine(section.Name);
+            Console.WriteLine(section.Description);
+            Console.WriteLine();
 
-        private static void ShowConnection(Connection connection)
-            => throw new NotImplementedException();
+            BulletMenu sectionMenu = new();
+            foreach (Choice choice in section.Choices)
+                sectionMenu.MenuItems.Add(new(choice.Description, () => choice.Choose()));
+                // DisplayChoice(choice);
 
-        private static void ShowChoice(Choice choice)
-            => throw new NotImplementedException();
+            foreach (Connection connection in section.Connections)
+                if (connection.IsVisible())
+                    sectionMenu.MenuItems.Add(new(connection.Target.Name, () => connection.Choose()));
+
+            Display(sectionMenu);
+
+            // TODO: Place this somewhere else!
+            Display(Player.CurrentSection);
+        }
+
+        private static void DisplayConnection(Connection connection)
+        {
+            Console.WriteLine(connection.Target.Name);
+        }
+
+        private static void DisplayChoice(Choice choice)
+        {
+            Console.WriteLine(choice.Description);
+        }
 
         public static class BeautifierUtility
         {
@@ -105,9 +129,10 @@ namespace BeerAdventure.Display
                 string input = PromptUser(prompt);
 
                 if (int.TryParse(input, out int inputNumber))
-                    return inputNumber;
-                else
-                    return -1;
+                    if (inputNumber >= minValue && inputNumber <= maxValue)
+                        return inputNumber;
+                
+                throw new ArgumentException("That number is not within the permitted range of " + minValue + " - " + maxValue);
             }
         }
     }

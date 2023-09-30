@@ -8,6 +8,7 @@ namespace BeerAdventure.Sections
     {
         public Section Target { get; set; }
         public List<Prerequisite> Prerequisites { get; set; } = new();
+        public Func<bool> IsVisible { get; set; }
 
         public void Choose()
         {
