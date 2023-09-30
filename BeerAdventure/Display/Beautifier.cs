@@ -1,14 +1,24 @@
 ﻿using BeerAdventure.Character;
+using BeerAdventure.Inventory;
 using BeerAdventure.Managers;
 using BeerAdventure.Sections;
+using System.Security.Cryptography.X509Certificates;
 
 namespace BeerAdventure.Display
 {
     public static class Beautifier
     {
+        public enum DisplayType
+        {
+            Normal,
+            Success,
+            Failure,
+            Emphasis
+        }
+
         private const ConsoleColor _defaultForegroundColor = ConsoleColor.White;
         private const ConsoleColor _defaultInputColor = ConsoleColor.Magenta;
-        private const ConsoleColor _defaultTitleColor = ConsoleColor.DarkYellow;
+        private const ConsoleColor _defaultEmphasisColor = ConsoleColor.DarkYellow;
         private const ConsoleColor _defaultSuccessColor = ConsoleColor.Green;
         private const ConsoleColor _defaultFailureColor = ConsoleColor.Red;
 
@@ -17,16 +27,80 @@ namespace BeerAdventure.Display
         public static void DisplayTitle()
             => BeautifierUtility.DisplayTitle();
 
-        public static void Display<T>(T displayable)
+        public static void DisplayString(string message, DisplayType displayType = DisplayType.Normal)
         {
-            if (displayable is string displayableString)
+            ConsoleColor consoleColor = Console.ForegroundColor;
+
+            switch (displayType)
             {
-                ConsoleColor consoleColor = Console.ForegroundColor;
-                Console.ForegroundColor = _defaultForegroundColor;
-                Console.WriteLine(displayableString);
-                Console.ForegroundColor = consoleColor;
+                case DisplayType.Normal:
+                    Console.ForegroundColor = _defaultForegroundColor;
+                    break;
+
+                case DisplayType.Success:
+                    Console.ForegroundColor = _defaultSuccessColor;
+                    break;
+
+                case DisplayType.Failure:
+                    Console.ForegroundColor = _defaultFailureColor;
+                    break;
+                    
+                case DisplayType.Emphasis:
+                    Console.ForegroundColor = _defaultEmphasisColor;
+                    break;
+
+                default:
+                    Console.ForegroundColor = _defaultForegroundColor;
+                    break;
             }
 
+            Console.Write(message);
+            Console.ForegroundColor = consoleColor;
+        }
+
+        public static void Countdown(int delay = 500)
+        {
+            DisplayString("\n. ");
+            Thread.Sleep(delay);
+            DisplayString(". ");
+            Thread.Sleep(delay);
+            DisplayString(". ");
+            Thread.Sleep(delay);
+        }
+
+        public static void DisplayInventory()
+        {
+            DisplayString("Checking my pockets, I currently have the following: \n\n");
+
+            if (!InventoryManager.HasAnyItems)
+            {
+                DisplayString("Absolutely nothing. ", DisplayType.Failure);
+                DisplayString("Not even a bit of lint!\n");
+            }
+
+            foreach (Item item in InventoryManager.SmallItems)
+            {
+                DisplayString("   " + item.Name, DisplayType.Emphasis);
+                DisplayString(" ~ " + item.Description + "\n");
+            }
+
+            foreach (Item item in InventoryManager.MediumItems)
+            {
+                DisplayString("   " + item.Name, DisplayType.Emphasis);
+                DisplayString(" ~ " + item.Description + "\n");
+            }
+
+            foreach (Item item in InventoryManager.LargeItems)
+            {
+                DisplayString("   " + item.Name, DisplayType.Emphasis);
+                DisplayString(" ~ " + item.Description + "\n");
+            }
+
+            DisplayString("\n");
+        }
+
+        public static void Display<T>(T displayable)
+        {
             if (displayable is BulletMenu menu)
                 DisplayBulletMenu(menu);
 
@@ -51,7 +125,11 @@ namespace BeerAdventure.Display
             {
                 if (i == targetedMenuItem)
                 {
-                    Console.ForegroundColor = _defaultSuccessColor;
+                    if (menu.MenuItems[i].Description.Contains("inventory") && i == menu.MenuItems.Count - 1)
+                        Console.ForegroundColor = _defaultEmphasisColor;
+                    else
+                        Console.ForegroundColor = _defaultSuccessColor;
+
                     Console.WriteLine("   " + menu.MenuItems[i].Description + "   ");
                     Console.ForegroundColor = _defaultForegroundColor;
                 }
@@ -67,9 +145,9 @@ namespace BeerAdventure.Display
             {
                 Console.ForegroundColor = _defaultInputColor;
                 Console.SetCursorPosition(startLeft + 1, startTop + targetedMenuItem);
-                Console.Write('[');
+                Console.Write('<');
                 Console.SetCursorPosition(startLeft + 4 + menu.MenuItems[targetedMenuItem].Description.Length, startTop + targetedMenuItem);
-                Console.Write(']');
+                Console.Write('>');
                 Console.ForegroundColor = _defaultForegroundColor;
 
                 pressedKey = Console.ReadKey(true).Key;
@@ -92,7 +170,11 @@ namespace BeerAdventure.Display
                 {
                     if (i == targetedMenuItem)
                     {
-                        Console.ForegroundColor = _defaultSuccessColor;
+                        if (menu.MenuItems[i].Description.Contains("inventory") && i == menu.MenuItems.Count - 1)
+                            Console.ForegroundColor = _defaultEmphasisColor;
+                        else
+                            Console.ForegroundColor = _defaultSuccessColor;
+
                         Console.WriteLine("   " + menu.MenuItems[i].Description + "   ");
                         Console.ForegroundColor = _defaultForegroundColor;
                     }
@@ -115,7 +197,7 @@ namespace BeerAdventure.Display
         {
             Console.Clear();
 
-            Console.ForegroundColor = _defaultTitleColor;
+            Console.ForegroundColor = _defaultEmphasisColor;
             Console.WriteLine(section.Name);
             Console.ForegroundColor = _defaultForegroundColor;
 
@@ -129,7 +211,13 @@ namespace BeerAdventure.Display
 
             foreach (Connection connection in section.Connections)
                 if (connection.IsVisible())
-                    sectionMenu.MenuItems.Add(new(connection.Description, () => connection.Choose()));
+                    sectionMenu.MenuItems.Add(new(connection.Description, () =>
+                    {
+                        DisplayString("I move on!\n\n");
+                        connection.Choose();
+                    }));
+
+            sectionMenu.MenuItems.Add(new("[ Check inventory ]", () => DisplayInventory()));
 
             Display(sectionMenu);
 
@@ -165,7 +253,7 @@ namespace BeerAdventure.Display
                     padding + @"| |_) |  __/  __/ |     / ____ \ (_| |\ V /  __/ | | | |_| |_| | | |  __/" + "\n" +
                     padding + @"|____/ \___|\___|_|    /_/    \_\__,_| \_/ \___|_| |_|\__|\__,_|_|  \___|" + "\n";
 
-                Console.ForegroundColor = _defaultTitleColor;
+                Console.ForegroundColor = _defaultEmphasisColor;
                 Console.WriteLine(title);
                 Console.ForegroundColor = _defaultForegroundColor;
                 #endregion
@@ -217,6 +305,8 @@ namespace BeerAdventure.Display
 
             public static void PromptContinue()
             {
+                (int left, int top) = Console.GetCursorPosition();
+
                 Console.ForegroundColor = _defaultInputColor;
                 Console.Write("[Continue...]");
                 Console.ForegroundColor = _defaultForegroundColor;
@@ -228,6 +318,10 @@ namespace BeerAdventure.Display
                     keyPressed = Console.ReadKey(true);
                 } 
                 while (!(keyPressed.Key == ConsoleKey.Enter || keyPressed.Key == ConsoleKey.Spacebar));
+
+                Console.SetCursorPosition(left, top);
+                Console.Write("             ");
+                Console.SetCursorPosition(left, top);
             }
         }
     }

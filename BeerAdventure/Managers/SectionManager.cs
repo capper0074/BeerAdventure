@@ -1,6 +1,8 @@
 ﻿using BeerAdventure.Sections;
 using BeerAdventure.Inventory;
 using State = BeerAdventure.Managers.GameStateManager.State;
+using DisplayType = BeerAdventure.Display.Beautifier.DisplayType;
+using BeerAdventure.Display;
 
 namespace BeerAdventure.Managers
 {
@@ -147,11 +149,9 @@ namespace BeerAdventure.Managers
             // ----- HOME -----
             Section homeSection = new(
                 HomeHeader, 
-                "You are home, in your little shack the size of a large horse, it smells like char and rum.\n" +
-                "Everywhere you look clutter is what you see.\n" +
-                "\n" +
-                "You still don't know how you manage to get dressed in clean clothes (almost) every day.\n" +
-                "\n" +
+                "You are in your home, a modest little shack the size of a large horse, possessing a strong distinct smell of char and rum.\n" +
+                "Piles of rocks line the walls of your shack, and a thick amount of dust and earth hangs in the air. *Perfection*\n" +
+                " \n" +
                 "You decide to...");
 
             Choice searchHouse = new(
@@ -164,9 +164,18 @@ namespace BeerAdventure.Managers
                 {
                     Item coin = new("Rusty coin", "It smells a bit funny, you wonder where it has been...", Size.Small);
 
-                    Console.WriteLine("You search the house...");
-                    Thread.Sleep(1000);
-                    Console.WriteLine($"You found a coin!");
+                    Beautifier.DisplayString("You decide to search your home in the hopes that you find something useful.\n" +
+                        "Only you know what you might find beneath the piles of stone you have been hoarding...\n");
+
+                    Beautifier.BeautifierUtility.PromptContinue();
+
+                    Beautifier.Countdown();
+                    Beautifier.DisplayString("A glint catches your eye!\n");
+                    
+                    Beautifier.BeautifierUtility.PromptContinue();
+
+                    Beautifier.Countdown();
+                    Beautifier.DisplayString($"You find a coin!\n", DisplayType.Success);
 
                     InventoryManager.SmallItems.Add(coin);
 
