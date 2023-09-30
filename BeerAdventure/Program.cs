@@ -1,7 +1,6 @@
 ﻿using BeerAdventure.Sections;
 using BeerAdventure.Managers;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
+using State = BeerAdventure.Managers.GameStateManager.State;
 
 namespace BeerAdventure
 {
@@ -23,13 +22,13 @@ namespace BeerAdventure
                         Description = "Deliver bread.",
                         Prerequisites = new()
                         {
-                            (GameStateManager.State.HasDeliveredBread, false)
+                            (State.HasDeliveredBread, false)
                         },
                         SuccesfulConsequnce = () =>
                         {
-                            GameStateManager.SetState(GameStateManager.State.HasDeliveredBread, true);
+                            GameStateManager.SetState(State.HasDeliveredBread, true);
                         },
-                        IsVisible = !GameStateManager.GetState(GameStateManager.State.HasDeliveredBread) // Only show if the player has bread in the Inventory.
+                        IsVisible = !GameStateManager.GetState(State.HasDeliveredBread) // Only show if the player has bread in the Inventory.
                     }
                 },
                 Connections = new() { }
@@ -46,7 +45,7 @@ namespace BeerAdventure
                         Description = "Borrow money from old lanky-ass man!",
                         Prerequisites = new()
                         {
-                            (GameStateManager.State.HasDeliveredBread, true)
+                            (State.HasDeliveredBread, true)
                         },
                         SuccesfulConsequnce = () =>
                         {
