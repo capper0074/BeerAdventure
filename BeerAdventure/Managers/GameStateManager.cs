@@ -8,7 +8,10 @@
             DebugState2,
             DebugState3,
             HasSearchedHome,
-            HasNotTalkedToWitch
+            HasReceivedSecretBushStashHint,
+            HasFoundSecretBushStash,
+            HasShoesOn,
+            HasLotsMoney
         }
 
         public static Dictionary<State, bool> States = new();
@@ -24,7 +27,10 @@
             States.Add(State.DebugState2, false);
             States.Add(State.DebugState3, false);
             States.Add(State.HasSearchedHome, false);
-            States.Add(State.HasNotTalkedToWitch, true);
+            States.Add(State.HasReceivedSecretBushStashHint, false);
+            States.Add(State.HasFoundSecretBushStash, false);
+            States.Add(State.HasShoesOn, false);
+            States.Add(State.HasLotsMoney, false);
 
             IsInitialized = true;
         }

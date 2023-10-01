@@ -75,8 +75,12 @@ namespace BeerAdventure.Display
             if (!InventoryManager.HasAnyItems)
             {
                 DisplayString("Absolutely nothing. ", DisplayType.Failure);
-                DisplayString("Not even a bit of lint!\n");
+                DisplayString("Not even a bit of lint!\n\n");
+                return;
             }
+
+            DisplayString("   ~ " + InventoryManager.Coins + " ~", DisplayType.Emphasis);
+            DisplayString(" coins in your pouch.\n");
 
             foreach (Item item in InventoryManager.SmallItems)
             {
