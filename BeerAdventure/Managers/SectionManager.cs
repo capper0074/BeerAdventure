@@ -156,9 +156,10 @@ namespace BeerAdventure.Managers
 
             // ----- HOME -----
             Section homeSection = new(
-                HomeHeader, 
-                "You are in your home, a modest little shack the size of a large horse. It smells of char and rum.\n" +
-                "Piles of rocks line the walls of your shack, and a thick amount of dust and earth hangs in the air. *Perfection*\n" +
+                HomeHeader,
+                "You stumble into your wretched, filth-ridden house, the stench reminding you of a brew \n" +
+                "gone terribly wrong. Amid the squalor, you can't help but dream of the sweet, frothy taste of beer, \n" +
+                "a momentary escape from the chaos of your tiny world." +
                 " \n" +
                 "You decide to...");
 
@@ -185,13 +186,14 @@ namespace BeerAdventure.Managers
                     Beautifier.Countdown();
                     Beautifier.DisplayString($"You find a rusty coin!\n", DisplayType.Success);
 
-                    InventoryManager.Coins++;
+                    InventoryManager.SmallItems.Add(coin);
+
                     Beautifier.BeautifierUtility.PromptContinue();
 
                     Beautifier.Countdown();
                     Beautifier.DisplayString($"And then another coin, not rusty this time!\n", DisplayType.Success);
 
-                    InventoryManager.SmallItems.Add(coin);
+                    InventoryManager.Coins++;
 
                     GameStateManager.SetState(State.HasSearchedHome, true);
                 },
@@ -274,82 +276,108 @@ namespace BeerAdventure.Managers
                 "\n" +
                 "From here you choose that you ...");
 
-            gardenSection.Connections.Add(new("... [Head to market]", marketSection));
-            marketSection.Connections.Add(new("... [Head to garden]", gardenSection));
+            gardenSection.Connections.Add(new("... head out and approach the market.", marketSection));
+            marketSection.Connections.Add(new("... head back to the sticks and smelly leaves.", gardenSection));
 
             Section cityBarSection = new(
                 CityBarHeader,
-                "[City bar description]");
+                "A cozy hideaway in the heart of the city, the City Bar welcomes all, big and small. \n" +
+                "Dimly lit with a hearty atmosphere, it's where dwarf dreams are brewed in barrels and laughter flows \n" +
+                "like a river of ale.\n" +
+                "\n" +
+                "You make up your mind, and decide to ...\n");
 
-            marketSection.Connections.Add(new("... [Head to the city bar]", cityBarSection));
-            cityBarSection.Connections.Add(new("... [Head to the market]", marketSection));
+            marketSection.Connections.Add(new("... head to the glorius City Bar!", cityBarSection));
+            cityBarSection.Connections.Add(new("... head to the pissy smelly market, with a frown on your tiny face...", marketSection));
 
             Choice cityBarSectionEnterCityBar = new(
-                "... [Enter city bar]",
+                "... enter the bar, and get a round of glorius beer!",
                 new()
                 {
                     new(State.HasShoesOn, true)
                 },
                 () =>
                 {
+                    // TODO: cHANGE THIS 
                     Beautifier.DisplayString("Hooray, you win boi!\n", DisplayType.Success);
                 },
                 () =>
                 {
                     Beautifier.DisplayString("You approach the grand tavern, but the bouncer mistakes you for a kid dwarf. \n" +
                         "\"Sorry, little one, no ale for you!\" they chuckle. Frustration brews within you, thinking, \n" +
-                        "\"I may be small, but I've got a thirst as big as any dwarf!\" Time to prove your beer-loving worth!\n");
+                        "\"I may be small, but I've got a thirst as big as any dwarf!\" Perhaps if I could get taller they \n" +
+                        "would let me in?\n");
                 });
 
             cityBarSection.Choices.Add(cityBarSectionEnterCityBar);
 
             Section cobblerSection = new(
                 CobblerHeader,
-                "[Cobbler description, smells of piss]");
+                "A bloody cramped cobbler's dive, stinking of piss and grumbling dwarves, with leather boots \n" +
+                "piled like a shite heap, and a foul-mouthed dwarf cobbler who'd rather cuss than cobble.\n" +
+                "\n" +
+                "Despite your better judgement, you ...");
 
             Choice cobblerSectionBuyShoes = new(
-                "[Buy tall shoes from cobbler!]",
+                "... make a bid on the tall shoes the cobbler has for sale.",
                 new List<Prerequisite>()
                 {
                     new Prerequisite(State.HasLotsMoney, true)
                 },
                 () =>
                 {
-                    Beautifier.DisplayString("Of course, take all of my shoe. Singular.\n", DisplayType.Success);
+                    Beautifier.DisplayString("The stubborn dwarf cobbler eyes you with a glare that could curdle ale, \n" +
+                        "but begrudgingly mutters, \"Fine, if ya must.\" He fetches a pair of battered leather boots \n" +
+                        "from the shite heap, grumbling, \"These'll cost ya, and they'll smell worse than this place.\"\n");
+
+                    Beautifier.BeautifierUtility.PromptContinue();
+
+                    Beautifier.DisplayString("You now have a pair of leather boots with high heels!\n", DisplayType.Success);
 
                     GameStateManager.SetState(State.HasShoesOn, true);
                 },
                 () =>
                 {
-                    Beautifier.DisplayString("You can't afford that kid. ", DisplayType.Failure);
-                    Beautifier.DisplayString("You need a lot of money.\n", DisplayType.Emphasis);
+                    Beautifier.DisplayString("The crotchety dwarf cobbler scowls at your request, shaking his head vehemently.\n"); 
+                    Beautifier.DisplayString("\"You'd ruin 'em in a blink, ya wee idiot! Get out before I toss ya out!\"\n", DisplayType.Failure);
+                    Beautifier.DisplayString("You deduce from his reaction that you need a lot of money.\n", DisplayType.Emphasis);
                 },
                 () => !GameStateManager.GetState(State.HasShoesOn));
 
             cobblerSection.Choices.Add(cobblerSectionBuyShoes);
 
-            marketSection.Connections.Add(new("... [Head to pissy cobbler]", cobblerSection));
-            cobblerSection.Connections.Add(new("... [Head back outside]", marketSection));
+            marketSection.Connections.Add(new("... embrace the smell of piss, and approach the pissy cobbler.", cobblerSection));
+            cobblerSection.Connections.Add(new("... hurry outside to the *somewhat* clean air.", marketSection));
 
             Section swampSection = new(
                 SwampHeader,
-                "[Swamp description]");
+                "Navigating this bloody swamp is a nightmare, with flies thicker than a troll's hide buzzing about. \n" +
+                "The air reeks like a goblin's armpit, and you trudge through muck that'd make even a dwarf curse \n" +
+                "the day they were born.\n" +
+                "\n" +
+                "You decide to...");
 
-            swampSection.Connections.Add(new("... [Head to garden]", gardenSection));
-            gardenSection.Connections.Add(new("... [Head to swamp]", swampSection));
+            swampSection.Connections.Add(new("... go to drier land, and head back to your garden.", gardenSection));
+            gardenSection.Connections.Add(new("... go to the smelly puddle of piss and poop. (Swamp)", swampSection));
 
             Choice swampSectionTalkToWitch = new(
-                "[Talk to witchybitchy]",
+                "... hollar at the crooked backed bitch bog.",
                 () =>
                 {
                     if (!GameStateManager.GetState(State.HasReceivedSecretBushStashHint))
                     {
-                        Beautifier.DisplayString("Hello little one, look under your bush - the one in your garden that is!");
+                        Beautifier.DisplayString("Your shouts startle the crooked-backed witchybitch in the murky swamp. \n" +
+                            "She cackles, revealing a toothless grin, and whispers:\n");
+                        Beautifier.DisplayString("\"Hidden treasure lies in yonder bush. \n" +
+                            "Hush now, and follow the glimmer, little kush.\"\n", DisplayType.Emphasis);
+
                         GameStateManager.SetState(State.HasReceivedSecretBushStashHint, true);
                     }
                     else
                     {
-                        Beautifier.Display("Piss off ya wee kiddo!");
+                        Beautifier.DisplayString("As you approach the crooked-backed witch in the gloomy swamp, she merely scoffs, \n" +
+                            "\"Aye, we've already had our chat, dimwit dwarf. Nothin' more to spill from these old lips of mine.\"\n" +
+                            "She shoos you away dismissively, leaving you to ponder her cryptic words.\n");
                     }
                 });
 
