@@ -60,11 +60,11 @@ namespace BeerAdventure.Display
 
         public static void Countdown(int delay = 500)
         {
-            DisplayString("\n. ");
+            DisplayString("\n.");
             Thread.Sleep(delay);
-            DisplayString(". ");
+            DisplayString(".");
             Thread.Sleep(delay);
-            DisplayString(". ");
+            DisplayString(".");
             Thread.Sleep(delay);
         }
 

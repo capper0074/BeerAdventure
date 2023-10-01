@@ -159,7 +159,7 @@ namespace BeerAdventure.Managers
                 HomeHeader,
                 "You stumble into your wretched, filth-ridden house, the stench reminding you of a brew \n" +
                 "gone terribly wrong. Amid the squalor, you can't help but dream of the sweet, frothy taste of beer, \n" +
-                "a momentary escape from the chaos of your tiny world." +
+                "a momentary escape from the chaos of your tiny world.\n" +
                 " \n" +
                 "You decide to...");
 
@@ -205,9 +205,9 @@ namespace BeerAdventure.Managers
             // ----- GARDEN -----
             Section gardenSection = new(
                 GardenHeader,
-                "You find yourself in the middle of your garden.\n" +
-                "Considering that you is a dwarf, and you is now surrounded by greenery, the hair on your body rises\n" +
-                "and a chill travels down your spine. The wind gently blows your curly nose hairs from side to side.\n" +
+                "Your dwarf's garden is a thorn in your side, filled with sticks, leaves, and other nuisances \n" +
+                "that irritate you to no end. It's a constant battle to keep it in check, and you often grumble \n" +
+                "about how much you despise tending to it.\n" +
                 "\n" +
                 "From here you decide that you ...");
 
@@ -227,15 +227,17 @@ namespace BeerAdventure.Managers
                     Beautifier.DisplayString("Ah, maybe this is the bush the stash hint mentioned?\n");
 
                     Beautifier.BeautifierUtility.PromptContinue();
+
                     Beautifier.DisplayString("You begin digging, as fast as your tiny limbs can manage!\n");
                     Beautifier.Countdown();
                     Beautifier.Countdown();
                     Beautifier.Countdown();
+                    
                     Beautifier.DisplayString("After digging for what seems to be an eternity with the small hairy hardened arms of yours\n" +
-                        "you finally hit something solid that isn't just another rock!");
+                        "you finally hit something solid that isn't just another rock!\n");
                     Beautifier.BeautifierUtility.PromptContinue();
 
-                    Beautifier.DisplayString("You find a stash of *exactly* 69 coins! Nice!", DisplayType.Success);
+                    Beautifier.DisplayString("You find a stash of *exactly* 69 coins! Nice!\n", DisplayType.Success);
 
                     GameStateManager.SetState(State.HasFoundSecretBushStash, true);
 
@@ -254,10 +256,7 @@ namespace BeerAdventure.Managers
                     Beautifier.BeautifierUtility.PromptContinue();
 
                     Beautifier.Countdown();
-                    Beautifier.DisplayString("As you expected, nothing here is worth your time.");
-
-                    GameStateManager.SetState(State.HasReceivedSecretBushStashHint, true);
-
+                    Beautifier.DisplayString("As you expected, nothing here is worth your time.\n");
                 },
                 () => !GameStateManager.GetState(State.HasFoundSecretBushStash));
 
@@ -265,7 +264,7 @@ namespace BeerAdventure.Managers
             // ----- GARDEN -----
 
             homeSection.Connections.Add(new("... head outside.", gardenSection));
-            gardenSection.Connections.Add(new("... hurry back inside, away from all the sticks and leaves!", homeSection));
+            gardenSection.Connections.Add(new("... hurry back to your own garden, away from all the sticks and leaves!", homeSection));
 
             Section marketSection = new(
                 MarketHeader,
